@@ -1,0 +1,20 @@
+# o símbolo '#' no início de cada linha indica um comentário
+#modelo CTMC - a primeira linha sem comentário indica a ordem (total de estados) do modelo
+4
+0 2 4 0
+0 0 0 1
+0 0 0 1
+2 0 0 0
+
+#modelo DTMC - *esta matriz deve ser gerada pelo simulador*
+#0 0,333333333 0,666666667 0
+#0 0,833333333 0 0,166666667
+#0 0 0,833333333 0,166666667
+#0,333333333 0 0 0,666666667
+
+#resposta: 0,1000;0,2000;0,4000;0,3000 (*usar 4 casas de precisão na resposta*)
+#ou seja:
+#10,0000% no primeiro estado
+#20,0000% no segundo
+#40,0000% no terceiro
+#30,0000% no quarto
