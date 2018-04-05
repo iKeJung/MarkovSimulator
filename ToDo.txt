@@ -1,0 +1,12 @@
+-Adicionar slider de tempo para poder ver os pulos acontecendo
+        QTimer::singleShot(2000, this, SLOT(yourSlot()));
+
+-Não deixar nada acontecer enquanto o sistema está simulando com thread
+
+-Avisar que o sistema está simulando com thread
+
+-Fazer algo a respeito das tabelas editaveis
+
+-Fazer a soma na terceira tabela
+
+-Mostrar porcentagens e não decimal
