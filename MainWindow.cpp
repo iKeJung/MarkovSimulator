@@ -267,5 +267,5 @@ void MainWindow::printResults(QVector<double> visits, QVector<double> results)
 
 void MainWindow::on_actionRun_Several_Threads_triggered()
 {
-    simulator->simulateMultipleThreads(steps);
+    //simulator->simulateMultipleThreads(steps);
 }

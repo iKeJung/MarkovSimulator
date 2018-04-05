@@ -1,14 +1,9 @@
 #include "SimulationThread.h"
 
-SimulationThread::SimulationThread(QObject *parent) : QThread(parent)
+SimulationThread::SimulationThread(QObject *parent) : QObject(parent)
 {
     startPosition = 0;
     steps = 0;
-}
-
-void SimulationThread::run()
-{
-    simulate(steps,startPosition);
 }
 
 void SimulationThread::setSteps(int value)

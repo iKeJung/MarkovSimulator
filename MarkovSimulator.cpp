@@ -14,6 +14,8 @@ MarkovSimulator::~MarkovSimulator()
         deleteMatrix(&ctmcMatrix);
         deleteMatrix(&dtmcMatrix);
     }
+    thread.quit();
+    thread.wait();
 }
 
 QVector<QVector<double> > MarkovSimulator::getCtmcMatrix()
@@ -121,17 +123,21 @@ QVector<double> MarkovSimulator::simulate(int steps, int startPosition)
 //Método que chama a simulação em uma thread
 void MarkovSimulator::simulateThreaded(int steps, int startPosition)
 {
-    SimulationThread *worker = new SimulationThread(this);
+    SimulationThread *worker = new SimulationThread();
+    worker->moveToThread(&thread);
+    connect(&thread, SIGNAL(finished()), worker, SLOT(deleteLater()));
+
     connect(worker, SIGNAL(resultsReady(QVector<double>,QVector<double>)),this, SLOT(getResults(QVector<double>,QVector<double>)));
-    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
+
     worker->setSteps(steps);
     worker->setStartPosition(startPosition);
     worker->setMatrix(dtmcMatrix);    
-    worker->start();
+    thread.start();
+    worker->simulate(steps,startPosition);
     runningThreads++;
 }
 
-void MarkovSimulator::simulateMultipleThreads(int steps, int startPosition)
+/*void MarkovSimulator::simulateMultipleThreads(int steps, int startPosition)
 {
     int stepsParcial = steps/8;
     for (int x = 0; x < 8; ++x) {
@@ -145,7 +151,7 @@ void MarkovSimulator::simulateMultipleThreads(int steps, int startPosition)
         runningThreads++;
     }
 
-}
+}*/
 
 QVector<double> MarkovSimulator::getNumberVisits() const
 {
@@ -156,7 +162,7 @@ QVector<double> MarkovSimulator::getNumberVisits() const
 void MarkovSimulator::getResults(QVector<double> visits, QVector<double> results)
 {
     qDebug() << "Thread Finished!";
-    runningThreads--;
+    /*runningThreads--;
     qDebug() << "Running threads: " << runningThreads;
     if(partialResults.isEmpty()){
         for (int x = 0; x < results.size(); ++x) {
@@ -169,10 +175,10 @@ void MarkovSimulator::getResults(QVector<double> visits, QVector<double> results
             numberVisits[x]+=visits[x];
         }
     }
-    if (runningThreads == 0) {
-        emit resultsReady(numberVisits, partialResults);
-        partialResults.clear();
-    }
+    if (runningThreads == 0) {*/
+        emit resultsReady(numberVisits, results);
+        //partialResults.clear();
+    //}
 }
 
 //Método para deleção das matrizes
