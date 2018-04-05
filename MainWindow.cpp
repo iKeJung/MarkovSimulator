@@ -241,7 +241,7 @@ void MainWindow::on_actionAbout_triggered()
     QMessageBox message;
     message.setText(tr("Markov Chain Simulator program details."));
     message.setInformativeText(tr("Program made as part of an assignment for the\n"
-                               "\"Simulação e Avaliação de Programas Computacionais\" course at Unisc\n\n"
+                               "\"Simulação e Avaliação de Sistemas Computacionais\" course at Unisc\n\n"
                                "Authors: Alessandra Helena Jandrey and Henrique Jung\n"
                                "Professor: Ricardo M. Czekster"));
     message.exec();
