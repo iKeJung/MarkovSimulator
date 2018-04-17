@@ -228,7 +228,7 @@ void MainWindow::on_actionRun_triggered()
 {
    QVector<double> results = simulator->simulate(steps);
    if(!results.isEmpty()){
-       printResults(simulator->getNumberVisits(), results);
+       printResults(simulator->getLastrVisits(), results);
    }
 }
 

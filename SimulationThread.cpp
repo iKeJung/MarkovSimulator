@@ -25,7 +25,6 @@ void SimulationThread::setMatrix(const QVector<QVector<double *> > &value)
 {
     matrix = value;
 }
-
 void SimulationThread::simulate(int steps, int startPosition)
 {
     int size = matrix.size();
