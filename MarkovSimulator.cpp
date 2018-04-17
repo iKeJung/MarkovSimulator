@@ -149,7 +149,7 @@ void MarkovSimulator::simulateMultipleThreads(int steps, int startPosition)
 
 }
 
-QVector<double> MarkovSimulator::getLastrVisits() const
+QVector<double> MarkovSimulator::getLastVisits() const
 {
     return lastVisits;
 }

@@ -23,7 +23,7 @@ public:
     void setCtmcMatrix(const QVector<QVector<double *> > value);
     QVector<QVector<double> > getDtmcMatrix();
     int getSize() const;
-    QVector<double> getLastrVisits() const;
+    QVector<double> getLastVisits() const;
 
     QVector<double> simulate(int steps, int startPosition = 0);
     void simulateThreaded(int steps, int startPosition = 0);
