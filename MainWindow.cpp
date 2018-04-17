@@ -121,6 +121,7 @@ QVector<QVector<double*> > MainWindow::openFile(QString fileName)
             size = line.toInt();
             if(size == 0){
                 fileNotSupported(QString("Matrix size is not first line in file"));
+                file.close();
                 return QVector<QVector<double*> >();
             }
             continue;
@@ -133,6 +134,7 @@ QVector<QVector<double*> > MainWindow::openFile(QString fileName)
             fileNotSupported(QString("Matrix line size is not iqual to size.\n"
 										"Size: %1\n"
                                         "Current line:%2 ").arg(size).arg(values.size()));
+            file.close();
             return QVector<QVector<double*> >();
         }
 		//7
@@ -142,13 +144,15 @@ QVector<QVector<double*> > MainWindow::openFile(QString fileName)
             double *value = new double();
             *value = values.at(x).toDouble(&ok);
             if(!ok){
-                fileNotSupported();
+                fileNotSupported();                
+                file.close();
                 return QVector<QVector<double*> >();
             }
             vector << value;
         }
         matrix.push_back(vector);
     }
+    file.close();
     return matrix;
 }
 
@@ -268,4 +272,14 @@ void MainWindow::printResults(QVector<double> visits, QVector<double> results)
 void MainWindow::on_actionRun_Several_Threads_triggered()
 {
     simulator->simulateMultipleThreads(steps);
+}
+
+void MainWindow::on_actionClose_triggered()
+{
+    this->close();
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+
 }

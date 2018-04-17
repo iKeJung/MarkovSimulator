@@ -38,6 +38,8 @@ private slots:
 
     void on_actionRun_Several_Threads_triggered();
 
+    void on_actionClose_triggered();
+
 private:
     Ui::MainWindow *ui;
     MarkovSimulator *simulator;
