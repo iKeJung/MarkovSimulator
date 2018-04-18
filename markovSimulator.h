@@ -7,8 +7,10 @@
 #include <QRandomGenerator>
 #include <QThread>
 #include <QTextStream>
+#include <QThreadPool>
 
 #include "SimulationThread.h"
+#include "RunnableSimulation.h"
 
 //#include "WorkThread.h"
 
@@ -56,7 +58,7 @@ private:
     void convertToDTMC();
 
     int runningThreads;
-    QThread thread;
+    //QThread thread;
 };
 
 

@@ -16,8 +16,8 @@ MarkovSimulator::~MarkovSimulator()
         deleteMatrix(&ctmcMatrix);
         deleteMatrix(&dtmcMatrix);
     }
-    thread.quit();
-    thread.wait();
+    //thread.quit();
+    //thread.wait();
 }
 
 QVector<QVector<double> > MarkovSimulator::getCtmcMatrix()
@@ -126,6 +126,7 @@ QVector<double> MarkovSimulator::simulate(int steps, int startPosition)
 //Método que chama a simulação em uma thread
 void MarkovSimulator::simulateThreaded(int steps, int startPosition)
 {
+    /*QThread thread;
     SimulationThread *worker = new SimulationThread();
     worker->moveToThread(&thread);
     connect(&thread, SIGNAL(finished()), worker, SLOT(deleteLater()));
@@ -137,27 +138,28 @@ void MarkovSimulator::simulateThreaded(int steps, int startPosition)
     worker->setMatrix(dtmcMatrix);    
     thread.start();
     worker->simulate(steps,startPosition);
+    */
+
+    RunnableSimulation *sim = new RunnableSimulation(dtmcMatrix,steps,startPosition);
+    connect(sim, SIGNAL(resultsReady(QVector<double>,QVector<double>)),this,SLOT(getResults(QVector<double>,QVector<double>)));
+    QThreadPool::globalInstance()->start(sim);
     runningThreads++;
     lastNsteps = steps;
 }
 
-/*void MarkovSimulator::simulateMultipleThreads(int steps, int startPosition)
+void MarkovSimulator::simulateMultipleThreads(int steps, int startPosition)
 {
     multipleThreads = true;
     lastNsteps = steps;
     int stepsParcial = steps/8;
     for (int x = 0; x < 8; ++x) {
-        SimulationThread *worker = new SimulationThread(this);
-        connect(worker, SIGNAL(resultsReady(QVector<double>,QVector<double>)),this, SLOT(getResults(QVector<double>,QVector<double>)));
-        connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
-        worker->setSteps(stepsParcial);
-        worker->setStartPosition(startPosition);
-        worker->setMatrix(dtmcMatrix);
-        worker->start();
+        RunnableSimulation *sim = new RunnableSimulation(dtmcMatrix,steps,startPosition);
+        connect(sim, SIGNAL(resultsReady(QVector<double>,QVector<double>)),this,SLOT(getResults(QVector<double>,QVector<double>)));
+        QThreadPool::globalInstance()->start(sim);
         runningThreads++;
     }
 
-}*/
+}
 
 QVector<double> MarkovSimulator::getLastVisits() const
 {
@@ -170,6 +172,7 @@ void MarkovSimulator::getResults(QVector<double> visits, QVector<double> results
     qDebug() << "Thread Finished!";
     runningThreads--;
     qDebug() << "Running threads: " << runningThreads;
+    qDebug() << QThreadPool::globalInstance()->activeThreadCount();
     if(multipleThreads){
         if(partialResults.isEmpty()){
             for (int x = 0; x < results.size(); ++x) {
