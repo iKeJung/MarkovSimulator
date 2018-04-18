@@ -45,7 +45,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
     MarkovSimulator *simulator;
+
     QVector<QVector<double*> > openFile(QString fileName);
+    void saveFile(QString fileName);
     void fileNotSupported(QString info = QString(""));
     void fillCTMCTable();
     void fillDTMCTable();

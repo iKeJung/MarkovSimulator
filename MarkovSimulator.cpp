@@ -4,6 +4,7 @@ MarkovSimulator::MarkovSimulator(QObject *parent) : QObject(parent)
 {
     size = 0;    
     runningThreads = 0;
+    lastNsteps = 0;
     multipleThreads = false;
     qRegisterMetaType<QVector<double> >("QVector<double>");
 }
@@ -114,6 +115,7 @@ QVector<double> MarkovSimulator::simulate(int steps, int startPosition)
         results[x] =results[x]/steps;
     }
     lastResults = results;
+    lastNsteps = steps;
     currentPosition = -1;
     return results;
 
@@ -130,11 +132,13 @@ void MarkovSimulator::simulateThreaded(int steps, int startPosition)
     worker->setMatrix(dtmcMatrix);    
     worker->start();
     runningThreads++;
+    lastNsteps = steps;
 }
 
 void MarkovSimulator::simulateMultipleThreads(int steps, int startPosition)
 {
     multipleThreads = true;
+    lastNsteps = steps;
     int stepsParcial = steps/8;
     for (int x = 0; x < 8; ++x) {
         SimulationThread *worker = new SimulationThread(this);
@@ -182,6 +186,11 @@ void MarkovSimulator::getResults(QVector<double> visits, QVector<double> results
         partialResults.clear();
         multipleThreads = false;
     }
+}
+
+int MarkovSimulator::getLastNsteps() const
+{
+    return lastNsteps;
 }
 
 QVector<double> MarkovSimulator::getLastResults() const

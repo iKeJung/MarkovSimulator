@@ -31,6 +31,8 @@ public:
 
     QVector<double> getLastResults() const;
 
+    int getLastNsteps() const;
+
 signals:
     void resultsReady(QVector<double> visits, QVector<double> results);
 public slots:
@@ -46,6 +48,7 @@ private:
     int currentPosition;
     int remainingSteps;
     bool multipleThreads;
+    int lastNsteps;
 
     void deleteMatrix(QVector<QVector<double*> > *matrix);
     QVector<QVector<double> > toStaticMatrix(QVector<QVector<double*> > matrix);
