@@ -1,4 +1,4 @@
-#ifndef MARKOVSIMULATOR_H
+﻿#ifndef MARKOVSIMULATOR_H
 #define MARKOVSIMULATOR_H
 
 #include <QObject>
@@ -23,12 +23,15 @@ public:
     void setCtmcMatrix(const QVector<QVector<double *> > value);
     QVector<QVector<double> > getDtmcMatrix();
     int getSize() const;
-    QVector<double> getNumberVisits() const;
+    QVector<double> getLastVisits() const;
 
     QVector<double> simulate(int steps, int startPosition = 0);
     void simulateThreaded(int steps, int startPosition = 0);
     void simulateMultipleThreads(int steps, int startPosition = 0);
 
+    QVector<double> getLastResults() const;
+
+    int getLastNsteps() const;
 
 signals:
     void resultsReady(QVector<double> visits, QVector<double> results);
@@ -37,11 +40,15 @@ public slots:
 private:    
     QVector<QVector<double*> > ctmcMatrix;
     QVector<QVector<double*> > dtmcMatrix;
-    QVector<double> numberVisits;
+    QVector<double> lastVisits;
     QVector<double> partialResults;
+    QVector<double> lastResults;
+
     int size;
     int currentPosition;
     int remainingSteps;
+    bool multipleThreads;
+    int lastNsteps;
 
     void deleteMatrix(QVector<QVector<double*> > *matrix);
     QVector<QVector<double> > toStaticMatrix(QVector<QVector<double*> > matrix);

@@ -4,6 +4,8 @@ MarkovSimulator::MarkovSimulator(QObject *parent) : QObject(parent)
 {
     size = 0;    
     runningThreads = 0;
+    lastNsteps = 0;
+    multipleThreads = false;
     qRegisterMetaType<QVector<double> >("QVector<double>");
 }
 
@@ -108,13 +110,14 @@ QVector<double> MarkovSimulator::simulate(int steps, int startPosition)
         }
 
     }
-    numberVisits = results;
+    lastVisits = results;
 
 
     for (int x = 0; x < size; ++x) {
         results[x] =results[x]/steps;
     }
-    
+    lastResults = results;
+    lastNsteps = steps;
     currentPosition = -1;
     return results;
 
@@ -135,10 +138,13 @@ void MarkovSimulator::simulateThreaded(int steps, int startPosition)
     thread.start();
     worker->simulate(steps,startPosition);
     runningThreads++;
+    lastNsteps = steps;
 }
 
 /*void MarkovSimulator::simulateMultipleThreads(int steps, int startPosition)
 {
+    multipleThreads = true;
+    lastNsteps = steps;
     int stepsParcial = steps/8;
     for (int x = 0; x < 8; ++x) {
         SimulationThread *worker = new SimulationThread(this);
@@ -153,32 +159,52 @@ void MarkovSimulator::simulateThreaded(int steps, int startPosition)
 
 }*/
 
-QVector<double> MarkovSimulator::getNumberVisits() const
+QVector<double> MarkovSimulator::getLastVisits() const
 {
-    return numberVisits;
+    return lastVisits;
 }
 
 //faz parte da simulação com thread
 void MarkovSimulator::getResults(QVector<double> visits, QVector<double> results)
 {
     qDebug() << "Thread Finished!";
-    /*runningThreads--;
+    runningThreads--;
     qDebug() << "Running threads: " << runningThreads;
-    if(partialResults.isEmpty()){
-        for (int x = 0; x < results.size(); ++x) {
-            partialResults.push_back(results[x]/8);
+    if(multipleThreads){
+        if(partialResults.isEmpty()){
+            for (int x = 0; x < results.size(); ++x) {
+                partialResults.push_back(results[x]/8);
+            }
+            lastVisits = visits;
+        }else{
+            for (int x = 0; x < results.size(); ++x) {
+                partialResults[x]+=(results[x]/8);
+                lastVisits[x]+=visits[x];
+            }
         }
-        numberVisits = visits;
     }else{
-        for (int x = 0; x < results.size(); ++x) {
-            partialResults[x]+=(results[x]/8);
-            numberVisits[x]+=visits[x];
-        }
+        partialResults = results;
+        lastVisits = visits;
     }
-    if (runningThreads == 0) {*/
-        emit resultsReady(numberVisits, results);
-        //partialResults.clear();
-    //}
+
+
+    if (runningThreads == 0) {
+        emit resultsReady(lastVisits, partialResults);
+        lastResults = partialResults;
+        partialResults.clear();
+        multipleThreads = false;
+    }
+
+}
+
+int MarkovSimulator::getLastNsteps() const
+{
+    return lastNsteps;
+}
+
+QVector<double> MarkovSimulator::getLastResults() const
+{
+    return lastResults;
 }
 
 //Método para deleção das matrizes

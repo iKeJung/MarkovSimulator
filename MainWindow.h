@@ -38,10 +38,16 @@ private slots:
 
     void on_actionRun_Several_Threads_triggered();
 
+    void on_actionClose_triggered();
+
+    void on_actionSave_triggered();
+
 private:
     Ui::MainWindow *ui;
     MarkovSimulator *simulator;
+
     QVector<QVector<double*> > openFile(QString fileName);
+    void saveFile(QString fileName);
     void fileNotSupported(QString info = QString(""));
     void fillCTMCTable();
     void fillDTMCTable();
