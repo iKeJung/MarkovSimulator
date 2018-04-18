@@ -56,6 +56,7 @@ private:
     void convertToDTMC();
 
     int runningThreads;
+    QThread thread;
 };
 
 

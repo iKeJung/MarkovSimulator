@@ -16,6 +16,8 @@ MarkovSimulator::~MarkovSimulator()
         deleteMatrix(&ctmcMatrix);
         deleteMatrix(&dtmcMatrix);
     }
+    thread.quit();
+    thread.wait();
 }
 
 QVector<QVector<double> > MarkovSimulator::getCtmcMatrix()
@@ -124,18 +126,22 @@ QVector<double> MarkovSimulator::simulate(int steps, int startPosition)
 //Método que chama a simulação em uma thread
 void MarkovSimulator::simulateThreaded(int steps, int startPosition)
 {
-    SimulationThread *worker = new SimulationThread(this);
+    SimulationThread *worker = new SimulationThread();
+    worker->moveToThread(&thread);
+    connect(&thread, SIGNAL(finished()), worker, SLOT(deleteLater()));
+
     connect(worker, SIGNAL(resultsReady(QVector<double>,QVector<double>)),this, SLOT(getResults(QVector<double>,QVector<double>)));
-    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
+
     worker->setSteps(steps);
     worker->setStartPosition(startPosition);
     worker->setMatrix(dtmcMatrix);    
-    worker->start();
+    thread.start();
+    worker->simulate(steps,startPosition);
     runningThreads++;
     lastNsteps = steps;
 }
 
-void MarkovSimulator::simulateMultipleThreads(int steps, int startPosition)
+/*void MarkovSimulator::simulateMultipleThreads(int steps, int startPosition)
 {
     multipleThreads = true;
     lastNsteps = steps;
@@ -151,7 +157,7 @@ void MarkovSimulator::simulateMultipleThreads(int steps, int startPosition)
         runningThreads++;
     }
 
-}
+}*/
 
 QVector<double> MarkovSimulator::getLastVisits() const
 {
@@ -181,12 +187,14 @@ void MarkovSimulator::getResults(QVector<double> visits, QVector<double> results
         lastVisits = visits;
     }
 
+
     if (runningThreads == 0) {
         emit resultsReady(lastVisits, partialResults);
         lastResults = partialResults;
         partialResults.clear();
         multipleThreads = false;
     }
+
 }
 
 int MarkovSimulator::getLastNsteps() const
