@@ -42,14 +42,15 @@ public slots:
 private:    
     QVector<QVector<double*> > ctmcMatrix;
     QVector<QVector<double*> > dtmcMatrix;
-    QVector<double> lastVisits;
-    QVector<double> partialResults;
+    QVector<QVector<double> > partialResults;
+    QVector<QVector<double> > partialVisits;
     QVector<double> lastResults;
+    QVector<double> lastVisits;
 
     int size;
     int currentPosition;
     int remainingSteps;
-    bool multipleThreads;
+    int NThreads;
     int lastNsteps;
 
     void deleteMatrix(QVector<QVector<double*> > *matrix);

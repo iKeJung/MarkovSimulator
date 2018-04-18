@@ -5,7 +5,7 @@ MarkovSimulator::MarkovSimulator(QObject *parent) : QObject(parent)
     size = 0;    
     runningThreads = 0;
     lastNsteps = 0;
-    multipleThreads = false;
+    NThreads = 1;
     qRegisterMetaType<QVector<double> >("QVector<double>");
 }
 
@@ -139,7 +139,7 @@ void MarkovSimulator::simulateThreaded(int steps, int startPosition)
     thread.start();
     worker->simulate(steps,startPosition);
     */
-
+    NThreads =1;
     RunnableSimulation *sim = new RunnableSimulation(dtmcMatrix,steps,startPosition);
     connect(sim, SIGNAL(resultsReady(QVector<double>,QVector<double>)),this,SLOT(getResults(QVector<double>,QVector<double>)));
     QThreadPool::globalInstance()->start(sim);
@@ -149,11 +149,11 @@ void MarkovSimulator::simulateThreaded(int steps, int startPosition)
 
 void MarkovSimulator::simulateMultipleThreads(int steps, int startPosition)
 {
-    multipleThreads = true;
     lastNsteps = steps;
-    int stepsParcial = steps/8;
+    NThreads = 8;
+    int stepsParcial = steps/NThreads;
     for (int x = 0; x < 8; ++x) {
-        RunnableSimulation *sim = new RunnableSimulation(dtmcMatrix,steps,startPosition);
+        RunnableSimulation *sim = new RunnableSimulation(dtmcMatrix,stepsParcial,startPosition);
         connect(sim, SIGNAL(resultsReady(QVector<double>,QVector<double>)),this,SLOT(getResults(QVector<double>,QVector<double>)));
         QThreadPool::globalInstance()->start(sim);
         runningThreads++;
@@ -169,33 +169,32 @@ QVector<double> MarkovSimulator::getLastVisits() const
 //faz parte da simulação com thread
 void MarkovSimulator::getResults(QVector<double> visits, QVector<double> results)
 {
-    qDebug() << "Thread Finished!";
+    //qDebug() << "Thread Finished!";
     runningThreads--;
-    qDebug() << "Running threads: " << runningThreads;
-    qDebug() << QThreadPool::globalInstance()->activeThreadCount();
-    if(multipleThreads){
-        if(partialResults.isEmpty()){
-            for (int x = 0; x < results.size(); ++x) {
-                partialResults.push_back(results[x]/8);
-            }
-            lastVisits = visits;
-        }else{
-            for (int x = 0; x < results.size(); ++x) {
-                partialResults[x]+=(results[x]/8);
-                lastVisits[x]+=visits[x];
-            }
-        }
-    }else{
-        partialResults = results;
-        lastVisits = visits;
-    }
+    //qDebug() << "Running threads: " << runningThreads;
+    //qDebug() << QThreadPool::globalInstance()->activeThreadCount();
 
+    partialResults.push_back(results);
+    partialVisits.push_back(visits);
 
     if (runningThreads == 0) {
-        emit resultsReady(lastVisits, partialResults);
-        lastResults = partialResults;
+        lastResults = partialResults[0];
+        lastVisits = partialVisits[0];
+        for (int x = 1; x < partialResults.size(); ++x) {
+            for (int y = 0; y < partialResults[x].size(); ++y) {
+                lastResults[y]+=partialResults[x][y];
+                lastVisits[y]+=partialVisits[x][y];
+            }
+        }
+        if(NThreads>1){
+            for (int x = 0; x < lastResults.size(); ++x) {
+                lastResults[x]/=NThreads;
+            }
+        }
+        emit resultsReady(lastVisits, lastResults);
+        qDebug() << "Finished";
         partialResults.clear();
-        multipleThreads = false;
+        partialVisits.clear();
     }
 
 }
