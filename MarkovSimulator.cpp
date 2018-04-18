@@ -140,7 +140,7 @@ void MarkovSimulator::simulateThreaded(int steps, int startPosition)
     worker->simulate(steps,startPosition);
     */
     NThreads =1;
-    RunnableSimulation *sim = new RunnableSimulation(dtmcMatrix,steps,startPosition);
+    RunnableSimulation *sim = new RunnableSimulation(&dtmcMatrix,steps,startPosition);
     connect(sim, SIGNAL(resultsReady(QVector<double>,QVector<double>)),this,SLOT(getResults(QVector<double>,QVector<double>)));
     QThreadPool::globalInstance()->start(sim);
     runningThreads++;
@@ -152,8 +152,8 @@ void MarkovSimulator::simulateMultipleThreads(int steps, int startPosition)
     lastNsteps = steps;
     NThreads = 8;
     int stepsParcial = steps/NThreads;
-    for (int x = 0; x < 8; ++x) {
-        RunnableSimulation *sim = new RunnableSimulation(dtmcMatrix,stepsParcial,startPosition);
+    for (int x = 0; x < NThreads; ++x) {
+        RunnableSimulation *sim = new RunnableSimulation(&dtmcMatrix,stepsParcial,startPosition);
         connect(sim, SIGNAL(resultsReady(QVector<double>,QVector<double>)),this,SLOT(getResults(QVector<double>,QVector<double>)));
         QThreadPool::globalInstance()->start(sim);
         runningThreads++;

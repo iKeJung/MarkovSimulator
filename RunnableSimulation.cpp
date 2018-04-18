@@ -1,6 +1,6 @@
 #include "RunnableSimulation.h"
 
-RunnableSimulation::RunnableSimulation(QVector<QVector<double*> > matrix, int steps, int startPosition)
+RunnableSimulation::RunnableSimulation(QVector<QVector<double*> > *matrix, int steps, int startPosition)
 {
     this->matrix = matrix;
     this->steps = steps;
@@ -10,7 +10,7 @@ RunnableSimulation::RunnableSimulation(QVector<QVector<double*> > matrix, int st
 
 void RunnableSimulation::run()
 {
-    int size = matrix.size();
+    int size = matrix->size();
     QVector<double> results;
     //1
     if(size == 0){
@@ -26,7 +26,7 @@ void RunnableSimulation::run()
         //3
         double random = QRandomGenerator::global()->generateDouble();
         //4
-        QVector<double*> possibilities = matrix[currentPosition];
+        QVector<double*> possibilities = (*matrix)[currentPosition];
         //5
         QVector<double> cumulative;
         QVector<int> positions;

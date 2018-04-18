@@ -10,10 +10,10 @@ class RunnableSimulation : public QObject, public QRunnable
 {
     Q_OBJECT
 public:
-    RunnableSimulation(QVector<QVector<double*> > matrix, int steps, int startPosition);
+    RunnableSimulation(QVector<QVector<double*> > *matrix, int steps, int startPosition);
     void run();
 private:
-    QVector<QVector<double*> > matrix;
+    QVector<QVector<double*> > *matrix;
     int steps;
     int startPosition;
 signals:
