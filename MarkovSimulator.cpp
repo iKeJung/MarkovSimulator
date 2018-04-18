@@ -183,6 +183,7 @@ void MarkovSimulator::getResults(QVector<double> visits, QVector<double> results
 
     if (runningThreads == 0) {
         emit resultsReady(lastVisits, partialResults);
+        lastResults = partialResults;
         partialResults.clear();
         multipleThreads = false;
     }
