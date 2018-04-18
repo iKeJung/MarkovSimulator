@@ -315,12 +315,22 @@ void MainWindow::on_actionRun_with_Thread_triggered()
 //Preenche a tabela de resultados(tableWidget_3) com o vetor recebido por parâmetro
 void MainWindow::printResults(QVector<double> visits, QVector<double> results)
 {
+    QTableWidgetItem *newItem;
+    double sum1 = 0;
+    double sum2 = 0;
     for (int x = 0; x < results.size(); ++x) {
-        QTableWidgetItem *newItem = new QTableWidgetItem(QString::number(results[x]));
+        newItem = new QTableWidgetItem(QString::number(results[x]));
+        sum1+=results[x];
         ui->tableWidget_3->setItem(1, x, newItem);        
         newItem = new QTableWidgetItem(QString::number(visits[x]));
+        sum2+=visits[x];
         ui->tableWidget_3->setItem(0, x, newItem);
     }
+    newItem = new QTableWidgetItem(QString::number(sum1));
+    ui->tableWidget_3->setItem(1, results.size(), newItem);
+    newItem = new QTableWidgetItem(QString::number(sum2));
+    ui->tableWidget_3->setItem(0, results.size(), newItem);
+    ui->tableWidget_3->resizeColumnsToContents();
 }
 
 void MainWindow::on_actionRun_Several_Threads_triggered()
