@@ -7,14 +7,14 @@
 
 -Avisar que a simulação terminou
 
--Ajustar a simulação com threads, ainda não está perfeito
+Parcial -Ajustar a simulação com threads, ainda não está perfeito(Runnable funciona, mas ainda não é mais rápido)
 
--Fazer algo a respeito das tabelas editaveis
+Parcial -Fazer algo a respeito das tabelas editaveis (Editar não afeta o programa em nada)
 
 Done -Fazer a soma na terceira tabela
 
 -Mostrar porcentagens e não decimal
 
--Mandar referência da matriz para as threads
+Done -Mandar referência da matriz para as threads
 
--Guardar resultados parciais das threads e só somar quando todas terminarem.
+Done -Guardar resultados parciais das threads e só somar quando todas terminarem.
