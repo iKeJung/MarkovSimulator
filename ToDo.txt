@@ -5,10 +5,16 @@
 
 -Avisar que o sistema está simulando com thread
 
+-Avisar que a simulação terminou
+
 -Ajustar a simulação com threads, ainda não está perfeito
 
 -Fazer algo a respeito das tabelas editaveis
 
--Fazer a soma na terceira tabela
+Done -Fazer a soma na terceira tabela
 
 -Mostrar porcentagens e não decimal
+
+-Mandar referência da matriz para as threads
+
+-Guardar resultados parciais das threads e só somar quando todas terminarem.
