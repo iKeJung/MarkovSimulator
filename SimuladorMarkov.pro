@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         MainWindow.cpp \
     MarkovSimulator.cpp \
-    SimulationThread.cpp
+    SimulationThread.cpp \
+    RunnableSimulation.cpp
 
 HEADERS  += MainWindow.h \
     MarkovSimulator.h \
-    SimulationThread.h
+    SimulationThread.h \
+    RunnableSimulation.h
 
 FORMS    += MainWindow.ui
 
