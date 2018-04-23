@@ -17,7 +17,7 @@ private:
     int steps;
     int startPosition;
 signals:
-    resultsReady(QVector<double> numberVisits, QVector<double> results);
+    void resultsReady(QVector<double> numberVisits, QVector<double> results);
 };
 
 #endif // RUNNABLESIMULATION_H

@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include <QTextStream>
 #include <QInputDialog>
+#include <QDesktopServices>
 
 #include "MarkovSimulator.h"
 
@@ -41,6 +42,8 @@ private slots:
     void on_actionClose_triggered();
 
     void on_actionSave_triggered();
+
+    void on_actionWiki_triggered();
 
 private:
     Ui::MainWindow *ui;

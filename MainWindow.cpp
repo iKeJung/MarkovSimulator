@@ -351,3 +351,8 @@ void MainWindow::on_actionSave_triggered()
     saveFile(fileName);
     //qDebug() << fileName;
 }
+
+void MainWindow::on_actionWiki_triggered()
+{
+    QDesktopServices::openUrl(QUrl("https://github.com/iKeJung/MarkovSimulator/wiki"));
+}
