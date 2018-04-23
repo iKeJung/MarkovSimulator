@@ -126,19 +126,6 @@ QVector<double> MarkovSimulator::simulate(int steps, int startPosition)
 //Método que chama a simulação em uma thread
 void MarkovSimulator::simulateThreaded(int steps, int startPosition)
 {
-    /*QThread thread;
-    SimulationThread *worker = new SimulationThread();
-    worker->moveToThread(&thread);
-    connect(&thread, SIGNAL(finished()), worker, SLOT(deleteLater()));
-
-    connect(worker, SIGNAL(resultsReady(QVector<double>,QVector<double>)),this, SLOT(getResults(QVector<double>,QVector<double>)));
-
-    worker->setSteps(steps);
-    worker->setStartPosition(startPosition);
-    worker->setMatrix(dtmcMatrix);    
-    thread.start();
-    worker->simulate(steps,startPosition);
-    */
     NThreads =1;
     RunnableSimulation *sim = new RunnableSimulation(&dtmcMatrix,steps,startPosition);
     connect(sim, SIGNAL(resultsReady(QVector<double>,QVector<double>)),this,SLOT(getResults(QVector<double>,QVector<double>)));
