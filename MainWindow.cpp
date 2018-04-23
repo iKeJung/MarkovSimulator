@@ -331,6 +331,10 @@ void MainWindow::printResults(QVector<double> visits, QVector<double> results)
     newItem = new QTableWidgetItem(QString::number(sum2));
     ui->tableWidget_3->setItem(0, results.size(), newItem);
     ui->tableWidget_3->resizeColumnsToContents();
+
+    QMessageBox::information(this,
+        tr("Markov Simulator"),
+        tr("The simulation has finished.") );
 }
 
 void MainWindow::on_actionRun_Several_Threads_triggered()
