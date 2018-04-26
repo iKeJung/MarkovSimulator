@@ -252,7 +252,7 @@ void MarkovSimulator::convertToDTMC()
 {
     double max = 0;
     for (int x = 0; x < size; ++x) {
-        if(max > *ctmcMatrix[x][x]){
+        if(max > *ctmcMatrix[x][x]){ // procura maior valor
             max = *ctmcMatrix[x][x];
         }
     }
