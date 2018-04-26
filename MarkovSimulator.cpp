@@ -269,12 +269,5 @@ void MarkovSimulator::convertToDTMC()
         }
         dtmcMatrix << vector;
     }
-    QString string = "";
-    for (int x = 0; x < dtmcMatrix.size(); ++x) {
-        for (int y = 0; y < dtmcMatrix[x].size(); ++y) {
-            string.append(QString("%1").arg(*dtmcMatrix[x][y],0,'g',2).append(" "));
-        }
-        string = "";
-    }
 }
 
