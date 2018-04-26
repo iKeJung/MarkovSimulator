@@ -3,9 +3,7 @@
 
 -Não deixar nada acontecer enquanto o sistema está simulando com thread
 
--Avisar que o sistema está simulando com thread
-
--Avisar que a simulação terminou
+Done -Avisar que a simulação terminou
 
 Parcial -Ajustar a simulação com threads, ainda não está perfeito(Runnable funciona, mas ainda não é mais rápido)
 
