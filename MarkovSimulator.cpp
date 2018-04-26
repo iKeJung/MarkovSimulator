@@ -126,6 +126,9 @@ QVector<double> MarkovSimulator::simulate(int steps, int startPosition)
 //Método que chama a simulação em uma thread
 void MarkovSimulator::simulateThreaded(int steps, int startPosition)
 {
+    if(size == 0){
+        return;
+    }
     NThreads =1;
     RunnableSimulation *sim = new RunnableSimulation(&dtmcMatrix,steps,startPosition);
     connect(sim, SIGNAL(resultsReady(QVector<double>,QVector<double>)),this,SLOT(getResults(QVector<double>,QVector<double>)));
@@ -136,6 +139,9 @@ void MarkovSimulator::simulateThreaded(int steps, int startPosition)
 
 void MarkovSimulator::simulateMultipleThreads(int steps, int startPosition)
 {
+    if(size == 0){
+        return;
+    }
     lastNsteps = steps;
     NThreads = 8;
     int stepsParcial = steps/NThreads;

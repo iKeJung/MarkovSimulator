@@ -150,6 +150,8 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionWiki"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFile"/>
@@ -195,6 +197,11 @@
   <action name="actionClose">
    <property name="text">
     <string>Close</string>
+   </property>
+  </action>
+  <action name="actionWiki">
+   <property name="text">
+    <string>Wiki</string>
    </property>
   </action>
  </widget>

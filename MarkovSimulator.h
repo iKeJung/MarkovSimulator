@@ -9,7 +9,6 @@
 #include <QTextStream>
 #include <QThreadPool>
 
-#include "SimulationThread.h"
 #include "RunnableSimulation.h"
 
 //#include "WorkThread.h"
