@@ -59,7 +59,7 @@ void MainWindow::on_actionOpen_triggered()
 	simulator->setCtmcMatrix(matrix);
     
 	//6
-	fillCTMCTable();
+	this->fillCTMCTable();
     fillDTMCTable();
 	
 	//7
